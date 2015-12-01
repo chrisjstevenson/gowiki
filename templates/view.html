@@ -1,0 +1,35 @@
+<head>
+  <link rel="stylesheet" href="../app/assets/main.css"/>
+  <style type="text/css">
+  /*
+  When the webpage is printed
+  this media query hides extra elements,
+  and makes the text content fit the page.
+  */
+  @media print {
+    #fork, #toolbar {
+        display: none;
+    }
+    body {
+        width: 94%;
+        padding-top: 1em;
+        font-size: 12px;
+    }
+    html {
+        border-top: 0;
+    }
+  }
+  </style>
+  <link rel="stylesheet" href="../app/assets/pen/src/pen.css" />
+</head>
+<body>
+<div class="pen">
+<h1>{{.Title}}</h1>
+
+<p>[<a href="/edit/{{.Title}}">edit</a>]</p>
+
+<div data-toggle="pen" data-placeholder="im a placeholder">
+  <div>{{printf "%s" .Body}}</div>
+</div>
+</div>
+</body>

@@ -1,0 +1,99 @@
+<h1>Editing {{.Title}}</h1>
+
+<link rel="stylesheet" href="../app/assets/main.css"/>
+<link rel="stylesheet" href="../app/assets/pen/src/pen.css" />
+<style type="text/css">
+/*
+When the webpage is printed
+this media query hides extra elements,
+and makes the text content fit the page.
+*/
+@media print {
+  #fork, #toolbar {
+      display: none;
+  }
+  body {
+      width: 94%;
+      padding-top: 1em;
+      font-size: 12px;
+  }
+  html {
+      border-top: 0;
+  }
+}
+</style>
+</head>
+<body>
+
+<form action="/save/{{.Title}}" method="POST">
+<div data-toggle="pen" data-placeholder="im a placeholder">
+  {{printf "%s" .Body}}
+</div>
+
+<div class="commands">
+  <button type="button" class="btn" id="saveButton">Save</button>
+</div>
+</form>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script src="../app/assets/pen/src/pen.js" /></script>
+<script src="../app/assets/pen/src/markdown.js"></script>
+<script type="text/javascript">
+
+// config
+var options = {
+  // toolbar: document.getElementById('custom-toolbar'),
+  editor: document.querySelector('[data-toggle="pen"]'),
+  debug: true,
+  list: [
+    'insertimage', 'blockquote', 'h2', 'h3', 'p', 'code', 'insertorderedlist', 'insertunorderedlist', 'inserthorizontalrule',
+    'indent', 'outdent', 'bold', 'italic', 'underline', 'createlink'
+  ]
+};
+
+// create editor
+var pen = window.pen = new Pen(options);
+
+pen.focus();
+
+// toggle editor mode
+// var mode = document.querySelector('#mode');
+// mode.addEventListener('click', function() {
+//   var text = this.textContent;
+//
+//   if(this.classList.contains('disabled')) {
+//     this.classList.remove('disabled');
+//     pen.rebuild();
+//   } else {
+//     this.classList.add('disabled');
+//     pen.destroy();
+//   }
+// });
+
+
+// toggle editor mode
+// var hinted = document.querySelector('#hinted')
+// hinted.addEventListener('click', function() {
+//   var pen = document.querySelector('.pen')
+//
+//   if(pen.classList.contains('hinted')) {
+//     pen.classList.remove('hinted');
+//     this.classList.add('disabled');
+//   } else {
+//     pen.classList.add('hinted');
+//     this.classList.remove('disabled');
+//   }
+// });
+
+var btn = document.querySelector('#saveButton')
+btn.addEventListener('click', function() {
+  $.post(
+    "/save/{{.Title}}",
+    { body: pen.getContent()},
+    function(data) {
+      window.location.replace('/');
+    }
+  );
+});
+</script>
+</body>
